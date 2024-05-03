@@ -130,8 +130,8 @@ function rectangularCollision({ rectangle1, rectangle2 }) {
   );
 }
 const battle = {
-  initiated:false
-}
+  initiated: false,
+};
 
 function animate() {
   const animationId = window.requestAnimationFrame(animate);
@@ -148,7 +148,7 @@ function animate() {
   let moving = true;
   player.moving = false;
 
-  if(battle.initiated)return
+  if (battle.initiated) return;
 
   //activate a battle
   if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed) {
@@ -174,25 +174,24 @@ function animate() {
         overlappingArea > (player.width * player.height) / 2 &&
         Math.random() < 0.02
       ) {
-        
         //desactivate current animation loop
-        window.cancelAnimationFrame(animationId)
-        battle.initiated = true
-        gsap.to('#overlappingDiv', {
+        window.cancelAnimationFrame(animationId);
+        battle.initiated = true;
+        gsap.to("#overlappingDiv", {
           opacity: 1,
           repeat: 3,
           yoyo: true,
           duration: 0.4,
-          onComplete(){
-            gsap.to('#overlappingDiv', {
-              opacity: 1,
-              duration: 0.4
-            })
-
+          onComplete() {
             //activate a new animation loop
-            animateBattle()
-          }
-        })
+            animateBattle();
+            gsap.to("#overlappingDiv", {
+              opacity: 1,
+              duration: 0.4,
+              
+            });
+          },
+        });
         break;
       }
     }
@@ -303,11 +302,23 @@ function animate() {
   }
 }
 
-animate()
+// animate();
 
-function animateBattle(){
-  window.requestAnimationFrame(animateBattle)
+const battleBackgroundImage = new Image();
+battleBackgroundImage.src = "./img/battleBackground.png";
+const battleBackgroundImage = new Sprite({
+  position: {
+    x: 0,
+    y: 0,
+  },
+  image: battleBackgroundImage,
+});
+
+function animateBattle() {
+  window.requestAnimationFrame(animateBattle);
 }
+
+animateBattle()
 
 let lastKey = "";
 window.addEventListener("keydown", (e) => {
